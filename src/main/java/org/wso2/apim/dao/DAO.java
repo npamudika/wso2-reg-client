@@ -23,7 +23,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Database Access Object used for the registry client
@@ -33,6 +35,7 @@ public class DAO {
     private List<RegistryResource> registryResourcesList = new ArrayList<RegistryResource>();
     private List<RegistryPath> registryPathsList = new ArrayList<RegistryPath>();
     private List<RegistryContent> registryContentIdsList = new ArrayList<RegistryContent>();
+    HashMap<String,ArrayList<Integer>> map = new HashMap<String,ArrayList<Integer>>();
 
     public DAO(String dataSourcePath) {
         //Initializes a hickariCP[https://github.com/brettwooldridge/HikariCP] datasource
@@ -106,6 +109,7 @@ public class DAO {
         final String getAPIContentFromRegContentIdSql = "SELECT reg_content_id, reg_content_data, reg_tenant_id " +
                 "FROM reg_content;";
         int count = 0;
+        int maxCount = 0;
         String regPath = null;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(getAPIContentFromRegContentIdSql);
@@ -145,6 +149,17 @@ public class DAO {
                     }
                 }
             }
+            for (int i = 0 ; i < registryContentIdsList.size() ; i++) {
+                map.putIfAbsent(registryContentIdsList.get(i).getRegPath(), new ArrayList<Integer>());
+                if (map.containsKey(registryContentIdsList.get(i).getRegPath())) {
+                    map.get(registryContentIdsList.get(i).getRegPath()).add(registryContentIdsList.get(i).getRegContentId());
+                }
+            }
+            for (Map.Entry<String,ArrayList<Integer>> entry : map.entrySet()) {
+                System.out.println(entry.getKey()+" : "+entry.getValue());
+                maxCount++;
+            }
+            System.out.println(maxCount);
             System.out.println(count);
             System.out.println("Successfully executed query to find missing content Ids for the reg_paths.");
         } catch (SQLException e) {
