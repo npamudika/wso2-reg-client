@@ -22,10 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Database Access Object used for the registry client
@@ -156,6 +153,7 @@ public class DAO {
                 }
             }
             for (Map.Entry<String,ArrayList<Integer>> entry : map.entrySet()) {
+                Collections.sort(entry.getValue());
                 System.out.println(entry.getKey()+" : "+entry.getValue());
                 maxCount++;
             }
