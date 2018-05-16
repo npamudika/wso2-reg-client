@@ -6,6 +6,8 @@ package org.wso2.apim.dto;
 public class RegistryPath {
     private int regPathId;
     private String regPathValue;
+    private String provider;
+    private String apiName;
 
     public String getRegPathValue() {
         return regPathValue;
@@ -23,12 +25,30 @@ public class RegistryPath {
         this.regPathId = regPathId;
     }
 
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
+    }
+
     @Override
     public String toString() {
-        return "RegistryPath {\n" +
-                "    reg_path_id: " + toIndentedString(regPathId) + "\n" +
-                "    reg_path_value: " + toIndentedString(regPathValue) + "\n" +
-                "}";
+        return "RegistryPath{" +
+                "regPathId=" + regPathId +
+                ", regPathValue='" + regPathValue + '\'' +
+                ", provider='" + provider + '\'' +
+                ", apiName='" + apiName + '\'' +
+                '}';
     }
 
     /**
